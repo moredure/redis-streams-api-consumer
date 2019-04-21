@@ -8,6 +8,7 @@ class Config:
         self.redis_ssl_keyfile = env.get('REDIS_SSL_KEYFILE', 'microredis_user_private.key')
         self.port = int(env.get('PORT', '3000'))
         self.postgres_url = env['POSTRGRES_URL']
+        self.consumer_id = env.get('CONSUMER_ID', 'redis-streams-consumer-0')
 
     @property
     def address(self) -> tuple:
