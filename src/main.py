@@ -14,22 +14,14 @@ if __name__ == '__main__':
     config = Config(environ)
     redis_conn = Redis(host=config.redis_host,
                        password=config.redis_password,
-                       port=config.redis_port)
-    # ssl=True,
-    # ssl_ca_certs=config.redis_ssl_ca_certs,
-    # ssl_certfile=config.redis_ssl_certfile,
-    # ssl_keyfile=config.redis_ssl_keyfile)
-
+                       port=config.redis_port,
+                       ssl=True,
+                       ssl_ca_certs=config.redis_ssl_ca_certs,
+                       ssl_certfile=config.redis_ssl_certfile,
+                       ssl_keyfile=config.redis_ssl_keyfile)
     postgres_conn = connect(config.postgres_url)
-
-    # print(redis_conn.xread({'impressions': '0', 'clicks': '0'}, 100, 0))
-    # [[b'impressions', [(b'1-0', {b'x': b'y', b'a': b'b'})]]]
-    # [[b'impressions', [(b'1-0', {b'x': b'y', b'a': b'b'})]], [b'clicks', [(b'1-0', {b'x': b'y', b'a': b'b'})]]]
-
     ad_events_repository = AdEventsRepository(postgres_conn)
-
     consumer = AdEventsConsumer(config.consumer_id, redis_conn, ad_events_repository, Event())
-
     server_thread = Thread(target=consumer.consume_forever)
     server_thread.start()
     signal(SIGTERM, consumer.close)

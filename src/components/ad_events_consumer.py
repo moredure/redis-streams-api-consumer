@@ -45,6 +45,7 @@ class AdEventsConsumer:
     def consume_forever(self):
         while not self.event.is_set():
             for stream, logs in self.conn.xreadgroup("clients", self.uid, {'impressions': '0', 'clicks': '0'}, 200, 0):
+                # [[b'impressions', [(b'1-0', {b'x': b'y', b'a': b'b'})]]]
                 if stream == b'impressions':
                     self.consume_impressions(logs)
                 elif stream == b'clicks':
