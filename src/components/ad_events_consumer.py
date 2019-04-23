@@ -15,6 +15,8 @@ class AdEventsConsumer:
 
     def close(self):
         self.event.set()
+        self.conn.connection_pool.disconnect()
+        self.repository.conn.close()
 
     def consume_impressions(self, logs: list) -> None:
         impressions = [
