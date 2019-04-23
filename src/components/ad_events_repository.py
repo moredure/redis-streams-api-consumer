@@ -1,5 +1,6 @@
 from psycopg2.extensions import connection
 
+
 class AdEventsRepository:
     def __init__(self, conn: connection):
         self.conn = conn

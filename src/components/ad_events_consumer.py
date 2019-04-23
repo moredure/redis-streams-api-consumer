@@ -1,5 +1,6 @@
-from threading import Event
 from datetime import datetime
+from threading import Event
+
 from redis import Redis
 
 from src.components.ad_events_repository import AdEventsRepository
