@@ -45,9 +45,13 @@ class AdEventsConsumer:
         self.conn.xack('clicks', 'clients', [id for (id, log) in logs])
 
     def consume_forever(self):
+        streams = {'impressions': '0', 'clicks': '0'}
         while not self.event.is_set():
-            for stream, logs in self.conn.xreadgroup("clients", self.uid, {'impressions': '0', 'clicks': '0'}, 200, 0):
+            for stream, logs in self.conn.xreadgroup("clients", self.uid, streams, 200, 0):
                 # [[b'impressions', [(b'1-0', {b'x': b'y', b'a': b'b'})]]]
+                if len(logs) == 0:
+                    streams[str(stream, 'utf-8')] = '>'
+
                 if stream == b'impressions':
                     self.consume_impressions(logs)
                 elif stream == b'clicks':

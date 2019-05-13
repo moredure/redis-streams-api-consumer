@@ -14,11 +14,7 @@ if __name__ == '__main__':
     config = Config(environ)
     redis_conn = Redis(host=config.redis_host,
                        password=config.redis_password,
-                       port=config.redis_port,
-                       ssl=True,
-                       ssl_ca_certs=config.redis_ssl_ca_certs,
-                       ssl_certfile=config.redis_ssl_certfile,
-                       ssl_keyfile=config.redis_ssl_keyfile)
+                       port=config.redis_port)
     postgres_conn = connect(config.postgres_url)
     ad_events_repository = AdEventsRepository(postgres_conn)
     consumer = AdEventsConsumer(config.consumer_id, redis_conn, ad_events_repository, Event())
