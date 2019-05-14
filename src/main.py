@@ -13,7 +13,7 @@ from src.components.config import Config
 if __name__ == '__main__':
     config = Config(environ)
     redis_conn = Redis(host=config.redis_host,
-                       password=config.redis_password,
+                       # password=config.redis_password,
                        port=config.redis_port)
     postgres_conn = connect(config.postgres_url)
     ad_events_repository = AdEventsRepository(postgres_conn)
